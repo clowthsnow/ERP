@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>MiniERP testing</title>
+</head>
+<body>
+<script>
+
+	function loadDoc() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("usuarios").innerHTML = this.responseText;
+			}
+		};
+		xhttp.open("GET", "http://localhost:8080/minierp/usuarios/consultar", true);
+		xhttp.send();
+	}
+</script>
+<h2>Usuarios</h2>
+<button type="button" id="usuario" onclick="loadDoc()">Obtener usuarios</button>
+<div id="usuarios">Aqui se mostrarán los usuarios</div>
+
+<h2>Ingresar usuario</h2>
+DNI: <input type="text" id="dni"></input>
+<button type="button" id="add" onclick="add()">Añadir usuarios</button>
+Response:
+<div id="response">
+</div>
+<script>
+function add(){
+	var data = {"idUsuario":null,"usuario_DNI":"12345678","usuario_Email":"elvis@presley.com","usuario_Login":"elvis","usuario_Telefono":"12345678","usuario_Apellido":"Presley","usuario_Direccion":"mi direccion","usuario_Nombre":"Elvis","fK_UsuarioCargo":{"idTablaGeneral":81,"tablaGeneral_Descripcion":"CLIENTE","tablaGeneral_CodigoMostrable":"4","tablaGeneral_Categoria":"CATEGORIZACIONEMPRESA","tablaGeneral_EstReg":1},"usuario_NombreCorto":"elvpres","usuario_Contrasena":"elvis","usuario_EstReg":1}
+	data.usuario_DNI = document.getElementById("dni").value;
+	var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("response").innerHTML = this.responseText;
+		}
+	};
+	xmlhttp.open("POST", "http://localhost:8080/minierp/usuarios/nuevo");
+	xmlhttp.setRequestHeader("Content-Type", "application/json");
+	xmlhttp.send(JSON.stringify(data));
+}
+</script>
+</body>
+</html>
